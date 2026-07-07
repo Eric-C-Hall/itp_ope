@@ -2092,7 +2092,7 @@ Proof
       rw[EXTENSION] >> eq_tac  >> rw[] >> fs[FUNSET])
   >- (qx_gen_tac `sn` >> rw[] >- (simp[SUBSET_DEF,IN_BIGUNION_IMAGE] >> rw[] >> fs[SUBSET_DEF,SF SFY_ss]) >>
         simp[PREIMAGE_BIGUNION,GSYM BIGUNION_IMAGE_INTER_RIGHT,IMAGE_IMAGE] >>
-        irule SIGMA_ALGEBRA_COUNTABLE_UNION >> simp[] >> rw[SUBSET_DEF] >> simp[])*)
+        irule SIGMA_ALGEBRA_COUNTABLE_UNION >> simp[] >> rw[SUBSET_DEF] >> simp[])
 QED*)
 
 Theorem IN_MEASURABLE_BOREL_FROM_PROD_SIGMA_ALT:
