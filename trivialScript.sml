@@ -3948,14 +3948,6 @@ Proof
         (irule o SIMP_RULE (srw_ss ()) [] o GSYM) ext_suminf_cmul >> simp[]
 QED
 
-Theorem pos_simple_fn_psf:
-    (∀(m:α m_space) f s e a. pos_simple_fn m f s e a ⇒ valid_psf (sig_alg m) s e a) ∧
-    (∀(sa: α algebra) mu f s e a.
-        pos_simple_fn (space sa,subsets sa,mu) f s e a ⇒ valid_psf sa s e a)
-Proof
-    rw[pos_simple_fn_def,valid_psf_def]
-QED
-
 Theorem psf_integral_mono:
     ∀m s e a t f b. measure_space m ∧ valid_psf (sig_alg m) s e a ∧ valid_psf (sig_alg m) t f b ∧
         (∀x. x ∈ m_space m ⇒ psf s e a x ≤ psf t f b x) ⇒
@@ -3972,7 +3964,7 @@ Proof
     rw[] >> qspecl_then [`𝟙 (m_space m)`,`c`,`m`] assume_tac pos_fn_integral_cmult >> rfs[] >>
     drule_then assume_tac MEASURE_SPACE_MSPACE_MEASURABLE >>
     `𝟙 (m_space m) ∈ Borel_measurable (sig_alg m)` by (irule IN_MEASURABLE_BOREL_INDICATOR >>
-        fs[measure_space_def] >> qexists_tac `m_space m` >> simp[]) >>
+                                                       fs[measure_space_def] >> qexists_tac `m_space m` >> simp[]) >>
     `(𝟙 (m_space m))⁺ = 𝟙 (m_space m)` by (rw[FUN_EQ_THM,fn_plus_def,indicator_fn_def] >>
         Cases_on `x ∈ m_space m` >> simp[]) >>
     gs[pos_fn_integral_indicator] >> NTAC 3 $ pop_assum kall_tac >> pop_assum $ SUBST1_TAC o SYM >>
