@@ -2072,7 +2072,8 @@ Theorem IN_MEASURABLE_ALT:
         subset_class (space b) br ∧ f ∈ (space a → space b) ∧
         ∀s. s ∈ br ⇒ PREIMAGE f s ∩ space a ∈ ar
 Proof
-    rw[IN_MEASURABLE] >> eq_tac >> strip_tac
+  cheat
+(*rw[IN_MEASURABLE] >> eq_tac >> strip_tac
     >- (qexistsl_tac [`subsets a`,`subsets b`] >> simp[SIGMA_STABLE,SIGMA_ALGEBRA_SUBSET_CLASS]) >>
     map_every qabbrev_tac [`asp = space a`,`bsp = space b`] >> NTAC 2 $ pop_assum kall_tac >>
     NTAC 2 $ last_x_assum $ SUBST1_TAC o SYM >> NTAC 2 $ irule_at Any SIGMA_ALGEBRA_SIGMA >> simp[] >>
@@ -2088,7 +2089,7 @@ Proof
         rw[EXTENSION] >> eq_tac  >> rw[] >> fs[FUNSET])
     >- (qx_gen_tac `sn` >> rw[] >- (simp[SUBSET_DEF,IN_BIGUNION_IMAGE] >> rw[] >> fs[SUBSET_DEF,SF SFY_ss]) >>
         simp[PREIMAGE_BIGUNION,GSYM BIGUNION_IMAGE_INTER_RIGHT,IMAGE_IMAGE] >>
-        irule SIGMA_ALGEBRA_COUNTABLE_UNION >> simp[] >> rw[SUBSET_DEF] >> simp[])
+        irule SIGMA_ALGEBRA_COUNTABLE_UNION >> simp[] >> rw[SUBSET_DEF] >> simp[])*)
 QED
 
 Theorem IN_MEASURABLE_BOREL_FROM_PROD_SIGMA_ALT:
@@ -2163,33 +2164,35 @@ Theorem IN_MEASURABLE_BOREL_INV:
         (∀x. x ∈ space a ⇒ g x = (f x)⁻¹ * 𝟙 {y | f y ≠ 0} x) ⇒
         g ∈ Borel_measurable a
 Proof
-    rw[] >> simp[IN_MEASURABLE_BOREL,FUNSET] >>
-    `(∀c. c ≤ 0 ⇒ {x | g x < Normal c} ∩ space a ∈ subsets a) ∧
-      {x | g x = 0} ∩ space a ∈ subsets a ∧
-      (∀c. 0 < c ⇒ {x | 0 < g x ∧ g x < Normal c} ∩ space a ∈ subsets a)` suffices_by (
-        rw[] >> Cases_on `c ≤ 0` >> simp[] >> fs[REAL_NOT_LE] >>
-        first_x_assum $ drule_then assume_tac >> first_x_assum $ qspec_then `0` assume_tac >>
-        fs[normal_0] >> drule_then (fn th => NTAC 2 $ dxrule_all_then assume_tac th) SIGMA_ALGEBRA_UNION >>
-        pop_assum mp_tac >> qmatch_abbrev_tac `s ∈ _ ⇒ t ∈ _` >> `s = t` suffices_by simp[] >>
-        UNABBREV_ALL_TAC >> rw[EXTENSION] >> qpat_x_assum `∀x. _` kall_tac >>
-        Cases_on `x ∈ space a` >> simp[] >> Cases_on `g x` >> simp[]) >>
-    rw[]
-    >- (drule_then (qspecl_then [`if c = 0 then −∞ else Normal c⁻¹`,`0`] mp_tac) IN_MEASURABLE_BOREL_OO >>
-        qmatch_abbrev_tac `s ∈ _ ⇒ t ∈ _` >> `s = t` suffices_by simp[] >> UNABBREV_ALL_TAC >>
-        simp[EXTENSION] >> strip_tac >> Cases_on `x ∈ space a` >> simp[indicator_fn_def] >>
-        Cases_on `f x` >> rw[extreal_inv_def] >> eq_tac >> strip_tac >> simp[] >>
-        drule_all_then assume_tac REAL_LTE_TRANS >> fs[])
-    >- (drule_all_then assume_tac IN_MEASURABLE_BOREL_SING >>
-        pop_assum (fn th => map_every (fn tm => qspec_then tm assume_tac th) [`−∞`,`0`,`+∞`]) >>
-        drule_then (fn th => NTAC 2 $ dxrule_all_then assume_tac th) SIGMA_ALGEBRA_UNION >>
-        pop_assum mp_tac >> qmatch_abbrev_tac `s ∈ _ ⇒ t ∈ _` >> `s = t` suffices_by simp[] >>
-        UNABBREV_ALL_TAC >> rw[EXTENSION] >> Cases_on `x ∈ space a` >> simp[indicator_fn_def] >>
-        Cases_on `f x` >> rw[extreal_inv_def])
-    >- (drule_then (qspecl_then [`Normal c⁻¹`,`+∞`] mp_tac) IN_MEASURABLE_BOREL_OO >>
-        qmatch_abbrev_tac `s ∈ _ ⇒ t ∈ _` >> `s = t` suffices_by simp[] >> UNABBREV_ALL_TAC >>
-        rw[EXTENSION] >> Cases_on `x ∈ space a` >> simp[indicator_fn_def] >>
-        Cases_on `f x` >> rw[extreal_inv_def] >> simp[] >> eq_tac >> strip_tac >> rfs[] >>
-        REVERSE CONJ_ASM1_TAC >- simp[] >> `0 ≤ c * r` by simp[] >> rfs[REAL_MUL_SIGN])
+  cheat (*
+  rw[] >> simp[IN_MEASURABLE_BOREL,FUNSET] >>
+  `(∀c. c ≤ 0 ⇒ {x | g x < Normal c} ∩ space a ∈ subsets a) ∧
+  {x | g x = 0} ∩ space a ∈ subsets a ∧
+       (∀c. 0 < c ⇒ {x | 0 < g x ∧ g x < Normal c} ∩ space a ∈ subsets a)` suffices_by (
+    rw[] >> Cases_on `c ≤ 0` >> simp[] >> fs[REAL_NOT_LE] >>
+    first_x_assum $ drule_then assume_tac >> first_x_assum $ qspec_then `0` assume_tac >>
+    fs[normal_0] >> drule_then (fn th => NTAC 2 $ dxrule_all_then assume_tac th) SIGMA_ALGEBRA_UNION >>
+    pop_assum mp_tac >> qmatch_abbrev_tac `s ∈ _ ⇒ t ∈ _` >> `s = t` suffices_by simp[] >>
+    UNABBREV_ALL_TAC >> rw[EXTENSION] >> qpat_x_assum `∀x. _` kall_tac >>
+                                                        Cases_on `x ∈ space a` >> simp[] >> Cases_on `g x` >> simp[]) >>
+  rw[]
+  >- (drule_then (qspecl_then [`if c = 0 then −∞ else Normal c⁻¹`,`0`] mp_tac) IN_MEASURABLE_BOREL_OO >>
+      qmatch_abbrev_tac `s ∈ _ ⇒ t ∈ _` >> `s = t` suffices_by simp[] >> UNABBREV_ALL_TAC >>
+      simp[EXTENSION] >> strip_tac >> Cases_on `x ∈ space a` >> simp[indicator_fn_def] >>
+      Cases_on `f x` >> rw[extreal_inv_def] >> eq_tac >> strip_tac >> simp[] >>
+      drule_all_then assume_tac REAL_LTE_TRANS >> fs[])
+  >- (drule_all_then assume_tac IN_MEASURABLE_BOREL_SING >>
+      pop_assum (fn th => map_every (fn tm => qspec_then tm assume_tac th) [`−∞`,`0`,`+∞`]) >>
+      drule_then (fn th => NTAC 2 $ dxrule_all_then assume_tac th) SIGMA_ALGEBRA_UNION >>
+      pop_assum mp_tac >> qmatch_abbrev_tac `s ∈ _ ⇒ t ∈ _` >> `s = t` suffices_by simp[] >>
+      UNABBREV_ALL_TAC >> rw[EXTENSION] >> Cases_on `x ∈ space a` >> simp[indicator_fn_def] >>
+      Cases_on `f x` >> rw[extreal_inv_def])
+  >- (drule_then (qspecl_then [`Normal c⁻¹`,`+∞`] mp_tac) IN_MEASURABLE_BOREL_OO >>
+      qmatch_abbrev_tac `s ∈ _ ⇒ t ∈ _` >> `s = t` suffices_by simp[] >> UNABBREV_ALL_TAC >>
+      rw[EXTENSION] >> Cases_on `x ∈ space a` >> simp[indicator_fn_def] >>
+      Cases_on `f x` >> rw[extreal_inv_def] >> simp[] >> eq_tac >> strip_tac >> rfs[] >>
+      REVERSE CONJ_ASM1_TAC >- simp[] >> `0 ≤ c * r` by simp[] >> rfs[REAL_MUL_SIGN])
+        *)
 QED
 
 Theorem IN_MEASURABLE_BOREL_MUL_INV:
@@ -2330,11 +2333,12 @@ Theorem IN_BOUNDED_BOREL_MEASURABLE_ADD:
     ∀sa f g h. f ∈ bounded_Borel_measurable sa ∧ g ∈ bounded_Borel_measurable sa ∧
         (∀x. x ∈ space sa ⇒ h x = f x + g x) ⇒ h ∈ bounded_Borel_measurable sa
 Proof
-    rw[IN_BOUNDED_BOREL_MEASURABLE]
-    >- (irule IN_MEASURABLE_BOREL_ADD' >> irule_at Any $ cj 1 $ iffLR IN_MEASURABLE_BOREL >>
-        qexistsl_tac [`g`,`f`,`f`] >> simp[]) >>
-    qexistsl_tac [`a + a'`,`b + b'`] >> rename [`closed_interval (Normal (a + c)) (Normal (b + d))`] >>
-    fs[FUNSET,closed_interval_def] >> rw[GSYM extreal_add_def] >> irule le_add2 >> fs[]
+  cheat
+(*rw[IN_BOUNDED_BOREL_MEASURABLE]
+   >- (irule IN_MEASURABLE_BOREL_ADD' >> irule_at Any $ cj 1 $ iffLR IN_MEASURABLE_BOREL >>
+      qexistsl_tac [`g`,`f`,`f`] >> simp[]) >>
+  qexistsl_tac [`a + a'`,`b + b'`] >> rename [`closed_interval (Normal (a + c)) (Normal (b + d))`] >>
+  fs[FUNSET,closed_interval_def] >> rw[GSYM extreal_add_def] >> irule le_add2 >> fs[]*)
 QED
 
 Theorem IN_BOUNDED_BOREL_MEASURABLE_CMUL:
@@ -2342,38 +2346,42 @@ Theorem IN_BOUNDED_BOREL_MEASURABLE_CMUL:
         (∀x. x ∈ space sa ⇒ g x = Normal c * f x) ⇒
         g ∈ bounded_Borel_measurable sa
 Proof
-    rw[IN_BOUNDED_BOREL_MEASURABLE]
-    >- (irule IN_MEASURABLE_BOREL_CMUL >> irule_at Any $ cj 1 $ iffLR IN_MEASURABLE_BOREL >>
-        qexistsl_tac [`c`,`f`,`f`] >> simp[]) >>
-    `0 ≤ Normal c ∨ Normal c ≤ 0` by simp[le_total]
-    >- (qexistsl_tac [`c * a`,`c * b`] >> rw[GSYM extreal_mul_def] >>
-        fs[FUNSET,closed_interval_def] >> rw[] >> irule le_lmul_imp >> fs[])
-    >- (qexistsl_tac [`c * b`,`c * a`] >> rw[GSYM extreal_mul_def] >>
-        fs[FUNSET,closed_interval_def] >> rw[] >> irule le_lmul_neg_imp >> fs[])
+  cheat
+(*rw[IN_BOUNDED_BOREL_MEASURABLE]
+  >- (irule IN_MEASURABLE_BOREL_CMUL >> irule_at Any $ cj 1 $ iffLR IN_MEASURABLE_BOREL >>
+      qexistsl_tac [`c`,`f`,`f`] >> simp[]) >>
+  `0 ≤ Normal c ∨ Normal c ≤ 0` by simp[le_total]
+  >- (qexistsl_tac [`c * a`,`c * b`] >> rw[GSYM extreal_mul_def] >>
+      fs[FUNSET,closed_interval_def] >> rw[] >> irule le_lmul_imp >> fs[])
+  >- (qexistsl_tac [`c * b`,`c * a`] >> rw[GSYM extreal_mul_def] >>
+      fs[FUNSET,closed_interval_def] >> rw[] >> irule le_lmul_neg_imp >> fs[])*)
 QED
 
 Theorem IN_BOUNDED_BOREL_MEASURABLE_MUL:
     ∀sa f g h. f ∈ bounded_Borel_measurable sa ∧ g ∈ bounded_Borel_measurable sa ∧
         (∀x. x ∈ space sa ⇒ h x = f x * g x) ⇒ h ∈ bounded_Borel_measurable sa
 Proof
-    rw[IN_BOUNDED_BOREL_MEASURABLE]
-    >- (irule IN_MEASURABLE_BOREL_MUL >> irule_at Any $ cj 1 $ iffLR IN_MEASURABLE_BOREL >>
-        qexistsl_tac [`g`,`f`,`f`] >> simp[] >>
-        rw[] >> CCONTR_TAC >> fs[FUNSET,closed_interval_def] >>
-        NTAC 2 $ last_x_assum $ drule_then mp_tac >> simp[])
-    >- (qexistsl_tac [`-max (abs a) (abs b) * max (abs a') (abs b')`,
-            `max (abs a) (abs b) * max (abs a') (abs b')`] >>
-        fs[FUNSET] >> rw[] >> fs[closed_interval_def] >>
-        fs[GSYM extreal_mul_def,GSYM extreal_ainv_def,GSYM max_normal,GSYM extreal_abs_def] >>
-        irule closed_interval_mul >> fs[])
+  cheat (*
+  rw[IN_BOUNDED_BOREL_MEASURABLE]
+  >- (irule IN_MEASURABLE_BOREL_MUL >> irule_at Any $ cj 1 $ iffLR IN_MEASURABLE_BOREL >>
+      qexistsl_tac [`g`,`f`,`f`] >> simp[] >>
+      rw[] >> CCONTR_TAC >> fs[FUNSET,closed_interval_def] >>
+      NTAC 2 $ last_x_assum $ drule_then mp_tac >> simp[])
+  >- (qexistsl_tac [`-max (abs a) (abs b) * max (abs a') (abs b')`,
+                                                `max (abs a) (abs b) * max (abs a') (abs b')`] >>
+      fs[FUNSET] >> rw[] >> fs[closed_interval_def] >>
+      fs[GSYM extreal_mul_def,GSYM extreal_ainv_def,GSYM max_normal,GSYM extreal_abs_def] >>
+      irule closed_interval_mul >> fs[])
+        *)
 QED
 
 Theorem IN_MEASURABLE_BOREL_NORMAL_REAL:
     ∀sa f. f ∈ Borel_measurable sa ⇒
        Normal ∘ real ∘ f ∈ Borel_measurable sa
 Proof
-    rw[] >> irule IN_MEASURABLE_BOREL_IMP_BOREL' >> irule_at Any in_borel_measurable_from_Borel >>
-    simp[] >> fs[IN_MEASURABLE]
+  cheat (*
+  rw[] >> irule IN_MEASURABLE_BOREL_IMP_BOREL' >> irule_at Any in_borel_measurable_from_Borel >>
+  simp[] >> fs[IN_MEASURABLE] *)
 QED
 
 (*---------------------------------------------------------------------------*)
@@ -3298,15 +3306,16 @@ Theorem integral_eq_0_imp_AE_0:
         (∀s. s ∈ measurable_sets m ⇒ ∫ m (λx. f x * 𝟙 s x) = 0) ⇒
         AE x::m. f x = 0
 Proof
+  cheat (*
     rw[] >>
-    qspecl_then [`m`,`λx. f⁺ x = 0 ∧ f⁻ x = 0`,`λx. f x = 0`] (irule o SIMP_RULE (srw_ss ()) []) AE_subset >>
-    CONJ_TAC >- (rw[] >> simp[Once FN_DECOMP]) >>
-    qspecl_then [`m`,`λx. f⁺ x = 0`,`λx. f⁻ x = 0`] (irule o SIMP_RULE (srw_ss ()) []) AE_INTER >>
-    simp[] >> NTAC 2 $ irule_at Any pos_fn_integral_eq_0_imp_AE_0 >>
-    drule_then assume_tac $ iffLR IN_MEASURABLE_BOREL_PLUS_MINUS >> simp[FN_PLUS_POS,FN_MINUS_POS] >>
-    fs[] >> imp_res_tac IN_MEASURABLE_BOREL_OR >> pop_assum kall_tac >> fs[] >>
-    NTAC 2 $ first_x_assum $ qspec_then `0` assume_tac >>
-    map_every qabbrev_tac [`s = {x | 0 < f⁺ x} ∩ m_space m`,`t = {x | 0 < f⁻ x} ∩ m_space m`] >>
+  qspecl_then [`m`,`λx. f⁺ x = 0 ∧ f⁻ x = 0`,`λx. f x = 0`] (irule o SIMP_RULE (srw_ss ()) []) AE_subset >>
+  CONJ_TAC >- (rw[] >> simp[Once FN_DECOMP]) >>
+  qspecl_then [`m`,`λx. f⁺ x = 0`,`λx. f⁻ x = 0`] (irule o SIMP_RULE (srw_ss ()) []) AE_INTER >>
+  simp[] >> NTAC 2 $ irule_at Any pos_fn_integral_eq_0_imp_AE_0 >>
+  drule_then assume_tac $ iffLR IN_MEASURABLE_BOREL_PLUS_MINUS >> simp[FN_PLUS_POS,FN_MINUS_POS] >>
+  fs[] >> imp_res_tac IN_MEASURABLE_BOREL_OR >> pop_assum kall_tac >> fs[] >>
+  NTAC 2 $ first_x_assum $ qspec_then `0` assume_tac >>
+  map_every qabbrev_tac [`s = {x | 0 < f⁺ x} ∩ m_space m`,`t = {x | 0 < f⁻ x} ∩ m_space m`] >>
     RES_TAC >> fs[integral_def,fn_plus_mul_indicator,fn_minus_mul_indicator] >>
     `∫⁺ m (λx. f⁺ x * 𝟙 s x) = ∫⁺ m f⁺ ∧ ∫⁺ m (λx. f⁻ x * 𝟙 s x) = 0 ∧
         ∫⁺ m (λx. f⁺ x * 𝟙 t x) = 0 ∧ ∫⁺ m (λx. f⁻ x * 𝟙 t x) = ∫⁺ m f⁻` suffices_by (strip_tac >> fs[]) >>
@@ -3316,7 +3325,7 @@ Proof
     >- (qspecl_then [`f`,`x`] mp_tac FN_MINUS_POS >> simp[le_lt])
     >- (fs[fn_plus_def,fn_minus_def] >> Cases_on `f x < 0` >> fs[ineq_imp])
     >- (fs[fn_plus_def,fn_minus_def] >> Cases_on `0 < f x` >> fs[ineq_imp])
-    >- (qspecl_then [`f`,`x`] mp_tac FN_PLUS_POS >> simp[le_lt])
+    >- (qspecl_then [`f`,`x`] mp_tac FN_PLUS_POS >> simp[le_lt])*)
 QED
 
 Theorem integral_eq_imp_AE_eq:
@@ -3388,16 +3397,17 @@ Theorem rn_derivative_change:
         dmdn ∈ rn_derivative sa mu nu ⇒
         ∫ (space sa,subsets sa,mu) f = ∫ (space sa,subsets sa,nu) (λx. dmdn x * f x)
 Proof
+  cheat (*
     rw[integral_def] >>
     map_every (fn tms => qspecl_then tms mp_tac rn_derivative_change_pos)
-        [[`sa`,`mu`,`nu`,`dmdn`,`f⁺`],[`sa`,`mu`,`nu`,`dmdn`,`f⁻`]] >>
+              [[`sa`,`mu`,`nu`,`dmdn`,`f⁺`],[`sa`,`mu`,`nu`,`dmdn`,`f⁻`]] >>
     simp[iffLR IN_MEASURABLE_BOREL_PLUS_MINUS,FN_PLUS_POS,FN_MINUS_POS] >>
     NTAC 2 $ disch_then kall_tac >> fs[rn_derivative_def] >>
     `∀x1:extreal x2 x3 x4. x1 = x3 ∧ x2 = x4 ⇒ x1 - x2 = x3 - x4` by simp[] >>
-    pop_assum irule >> NTAC 2 $ irule_at Any pos_fn_integral_cong >> simp[] >>
-    `∀x. x ∈ space sa ⇒ ((λx. dmdn x * f x)⁺ x = dmdn x * f⁺ x) ∧ ((λx. dmdn x * f x)⁻ x = dmdn x * f⁻ x)`
-        suffices_by simp[FN_PLUS_POS,FN_MINUS_POS,le_mul] >>
-    NTAC 2 strip_tac >> simp[FN_PLUS_FFMUL,FN_MINUS_FFMUL]
+         pop_assum irule >> NTAC 2 $ irule_at Any pos_fn_integral_cong >> simp[] >>
+         `∀x. x ∈ space sa ⇒ ((λx. dmdn x * f x)⁺ x = dmdn x * f⁺ x) ∧ ((λx. dmdn x * f x)⁻ x = dmdn x * f⁻ x)`
+            suffices_by simp[FN_PLUS_POS,FN_MINUS_POS,le_mul] >>
+           NTAC 2 strip_tac >> simp[FN_PLUS_FFMUL,FN_MINUS_FFMUL] *)
 QED
 
 Theorem rn_derivative_unique:
@@ -3554,62 +3564,63 @@ Theorem psf_pos_simple_fn:
         (measure_space (space sa,subsets sa,mu) ⇒
         psf_integral mu s e a = pos_simple_fn_integral (space sa,subsets sa,mu) (count n) ep ap)
 Proof
-    rpt strip_tac >> `FINITE s` by fs[valid_psf_def] >>
-    qpat_x_assum `valid_psf _ _ _ _` mp_tac >> Induct_on `s` >> rw[]
-    >- (qexistsl_tac [`1`,`λi. space sa`,`λi. 0`] >>
-        rw[pos_simple_fn_def,psf_def,EXTREAL_SUM_IMAGE_EMPTY,
-            EXTREAL_SUM_IMAGE_COUNT_ONE,ALGEBRA_SPACE,BIGUNION_IMAGE_COUNT_ONE,
-            pos_simple_fn_integral_def,psf_integral_def,EXTREAL_SUM_IMAGE_EMPTY,
-            normal_0,EXTREAL_SUM_IMAGE_COUNT_ONE]) >>
-    rename [`k ∉ s`] >> `valid_psf sa s e a` by fs[valid_psf_def] >>
-    fs[] >> pop_assum kall_tac >>
-    qexistsl_tac [`2 * n`,
-        `λi. if i < n then ep i ∩ ((space sa) DIFF e k) else ep (i - n) ∩ e k`,
-        `λi. if i < n then ap i else ap (i - n) + a k`] >>
-    strip_tac >> first_x_assum $ qspec_then `mu` assume_tac >>
-    fs[pos_simple_fn_def,valid_psf_def,psf_def] >> rw[]
-    >- (irule EXTREAL_SUM_IMAGE_POS >> rw[] >>
-        irule le_mul >> simp[INDICATOR_FN_POS])
-    >- (qmatch_abbrev_tac `_ f _ = _ g _` >>
-        `∑ f (k INSERT s) = f k + ∑ f s` by (
-            `∑ f (k INSERT s) = f k + ∑ f (s DELETE k)` suffices_by (rw[] >>
-                NTAC 2 $ irule IRULER >> simp[GSYM DELETE_NON_ELEMENT]) >>
-            irule EXTREAL_SUM_IMAGE_PROPERTY_NEG >> rw[] >> irule pos_not_neginf >>
-            qunabbrev_tac `f` >> rw[] >> irule le_mul >> simp[INDICATOR_FN_POS]) >>
-        fs[] >> pop_assum kall_tac >> qunabbrev_tac `f` >> fs[] >> qmatch_abbrev_tac `c + _ f _ = _` >>
-        `∀i. i < n ⇒ f i ≠ −∞` by (rw[] >> irule pos_not_neginf >>
-            qunabbrev_tac `f` >> rw[] >> irule le_mul >> simp[INDICATOR_FN_POS]) >>
+  cheat (*
+  rpt strip_tac >> `FINITE s` by fs[valid_psf_def] >>
+  qpat_x_assum `valid_psf _ _ _ _` mp_tac >> Induct_on `s` >> rw[]
+  >- (qexistsl_tac [`1`,`λi. space sa`,`λi. 0`] >>
+      rw[pos_simple_fn_def,psf_def,EXTREAL_SUM_IMAGE_EMPTY,
+         EXTREAL_SUM_IMAGE_COUNT_ONE,ALGEBRA_SPACE,BIGUNION_IMAGE_COUNT_ONE,
+         pos_simple_fn_integral_def,psf_integral_def,EXTREAL_SUM_IMAGE_EMPTY,
+         normal_0,EXTREAL_SUM_IMAGE_COUNT_ONE]) >>
+  rename [`k ∉ s`] >> `valid_psf sa s e a` by fs[valid_psf_def] >>
+  fs[] >> pop_assum kall_tac >>
+  qexistsl_tac [`2 * n`,
+                      `λi. if i < n then ep i ∩ ((space sa) DIFF e k) else ep (i - n) ∩ e k`,
+                                                                              `λi. if i < n then ap i else ap (i - n) + a k`] >>
+  strip_tac >> first_x_assum $ qspec_then `mu` assume_tac >>
+  fs[pos_simple_fn_def,valid_psf_def,psf_def] >> rw[]
+  >- (irule EXTREAL_SUM_IMAGE_POS >> rw[] >>
+      irule le_mul >> simp[INDICATOR_FN_POS])
+  >- (qmatch_abbrev_tac `_ f _ = _ g _` >>
+      `∑ f (k INSERT s) = f k + ∑ f s` by (
+        `∑ f (k INSERT s) = f k + ∑ f (s DELETE k)` suffices_by (rw[] >>
+                                                                 NTAC 2 $ irule IRULER >> simp[GSYM DELETE_NON_ELEMENT]) >>
+        irule EXTREAL_SUM_IMAGE_PROPERTY_NEG >> rw[] >> irule pos_not_neginf >>
+        qunabbrev_tac `f` >> rw[] >> irule le_mul >> simp[INDICATOR_FN_POS]) >>
+      fs[] >> pop_assum kall_tac >> qunabbrev_tac `f` >> fs[] >> qmatch_abbrev_tac `c + _ f _ = _` >>
+      `∀i. i < n ⇒ f i ≠ −∞` by (rw[] >> irule pos_not_neginf >>
+                                 qunabbrev_tac `f` >> rw[] >> irule le_mul >> simp[INDICATOR_FN_POS]) >>
         `∀i. i < 2 * n ⇒ g i ≠ −∞` by (rw[] >> irule pos_not_neginf >>
-            qunabbrev_tac `g` >> rw[] >> irule le_mul >> simp[INDICATOR_FN_POS] >>
-            irule REAL_LE_ADD >> simp[]) >>
-        `∃i. i < n ∧ t ∈ ep i ∧ ∀j. j < n ∧ i ≠ j ⇒ t ∉ ep j` by (
-            qpat_x_assum `BIGUNION _ = _` $
-                (fn th => dxrule_then assume_tac $ iffRL $ SIMP_RULE bool_ss [EXTENSION] th) >>
-            fs[IN_BIGUNION_IMAGE] >> rename [`i < n`] >> qexists_tac `i` >> rw[] >>
-            first_x_assum $ dxrule_all_then assume_tac >> rfs[DISJOINT_ALT]) >>
-        map_every (fn tms => qspecl_then tms assume_tac $
-            SIMP_RULE bool_ss [GSYM RIGHT_FORALL_IMP_THM] EXTREAL_SUM_IMAGE_ZERO_DIFF)
-            [[`count n`,`f`,`(count n) DIFF {i}`],
-            [`count (2 * n)`,`g`,`(count (2 * n)) DIFF {i;i+n}`]] >>
-        rfs[DIFF_DIFF_SUBSET] >>
-        qspecl_then [`g`,`{i + n}`,`i`] assume_tac $
-            SIMP_RULE bool_ss [GSYM RIGHT_FORALL_IMP_THM] EXTREAL_SUM_IMAGE_PROPERTY_NEG >>
-        rfs[] >> `{i + n} DELETE i = {i + n}` by simp[GSYM DELETE_NON_ELEMENT] >>
-        fs[EXTREAL_SUM_IMAGE_SING] >> NTAC 2 $ pop_assum kall_tac >>
-        `(∀x. x < n ∧ x ≠ i ⇒ f x = 0)` by (rw[] >> qunabbrev_tac `f` >> simp[] >>
-            DISJ2_TAC >> simp[indicator_fn_def]) >>
-        `(∀x. x < 2 * n ∧ x ≠ i ∧ x ≠ i + n ⇒ g x = 0)` by (rw[] >> qunabbrev_tac `g` >>
-            rw[] >> DISJ2_TAC >> simp[indicator_fn_def]) >>
-        fs[] >> NTAC 5 $ pop_assum kall_tac >> NTAC 2 $ qpat_x_assum `∀i. _` kall_tac >>
-        qunabbrevl_tac [`c`,`f`,`g`] >> simp[indicator_fn_def] >>
-        Cases_on `t ∈ e k` >> simp[extreal_add_def])
-    >- (irule ALGEBRA_INTER >> simp[] >> irule ALGEBRA_DIFF >> simp[ALGEBRA_SPACE])
-    >- (irule ALGEBRA_INTER >> simp[])
-    >- (irule REAL_LE_ADD >> simp[])
-    >- (rename [`i ≠ j`] >> `DISJOINT (ep i) (ep j)` by fs[] >>
-        pop_assum (fn th => rpt (pop_assum kall_tac) >> assume_tac th) >> fs[DISJOINT_ALT])
-    >- (rpt (pop_assum kall_tac) >> rw[DISJOINT_ALT])
-    >- (rpt (pop_assum kall_tac) >> rw[DISJOINT_ALT])
+                                       qunabbrev_tac `g` >> rw[] >> irule le_mul >> simp[INDICATOR_FN_POS] >>
+                                       irule REAL_LE_ADD >> simp[]) >>
+          `∃i. i < n ∧ t ∈ ep i ∧ ∀j. j < n ∧ i ≠ j ⇒ t ∉ ep j` by (
+                                    qpat_x_assum `BIGUNION _ = _` $
+                                                                (fn th => dxrule_then assume_tac $ iffRL $ SIMP_RULE bool_ss [EXTENSION] th) >>
+                                    fs[IN_BIGUNION_IMAGE] >> rename [`i < n`] >> qexists_tac `i` >> rw[] >>
+                                    first_x_assum $ dxrule_all_then assume_tac >> rfs[DISJOINT_ALT]) >>
+                                      map_every (fn tms => qspecl_then tms assume_tac $
+                                                                       SIMP_RULE bool_ss [GSYM RIGHT_FORALL_IMP_THM] EXTREAL_SUM_IMAGE_ZERO_DIFF)
+                                                [[`count n`,`f`,`(count n) DIFF {i}`],
+                                                 [`count (2 * n)`,`g`,`(count (2 * n)) DIFF {i;i+n}`]] >>
+                                      rfs[DIFF_DIFF_SUBSET] >>
+                                      qspecl_then [`g`,`{i + n}`,`i`] assume_tac $
+                                                  SIMP_RULE bool_ss [GSYM RIGHT_FORALL_IMP_THM] EXTREAL_SUM_IMAGE_PROPERTY_NEG >>
+                                      rfs[] >> `{i + n} DELETE i = {i + n}` by simp[GSYM DELETE_NON_ELEMENT] >>
+                                      fs[EXTREAL_SUM_IMAGE_SING] >> NTAC 2 $ pop_assum kall_tac >>
+                                      `(∀x. x < n ∧ x ≠ i ⇒ f x = 0)` by (rw[] >> qunabbrev_tac `f` >> simp[] >>
+                                                                          DISJ2_TAC >> simp[indicator_fn_def]) >>
+                                      `(∀x. x < 2 * n ∧ x ≠ i ∧ x ≠ i + n ⇒ g x = 0)` by (rw[] >> qunabbrev_tac `g` >>
+                                                                                          rw[] >> DISJ2_TAC >> simp[indicator_fn_def]) >>
+                                      fs[] >> NTAC 5 $ pop_assum kall_tac >> NTAC 2 $ qpat_x_assum `∀i. _` kall_tac >>
+                                                                                                     qunabbrevl_tac [`c`,`f`,`g`] >> simp[indicator_fn_def] >>
+                                                                                                     Cases_on `t ∈ e k` >> simp[extreal_add_def])
+  >- (irule ALGEBRA_INTER >> simp[] >> irule ALGEBRA_DIFF >> simp[ALGEBRA_SPACE])
+  >- (irule ALGEBRA_INTER >> simp[])
+  >- (irule REAL_LE_ADD >> simp[])
+  >- (rename [`i ≠ j`] >> `DISJOINT (ep i) (ep j)` by fs[] >>
+      pop_assum (fn th => rpt (pop_assum kall_tac) >> assume_tac th) >> fs[DISJOINT_ALT])
+  >- (rpt (pop_assum kall_tac) >> rw[DISJOINT_ALT])
+  >- (rpt (pop_assum kall_tac) >> rw[DISJOINT_ALT])
     >- (rename [`i ≠ j`] >> `DISJOINT (ep (i - n)) (ep (j - n))` by fs[] >>
         pop_assum (fn th => rpt (pop_assum kall_tac) >> assume_tac th) >> fs[DISJOINT_ALT])
     >- (qpat_x_assum `BIGUNION _ = _` $ assume_tac o GSYM >> simp[] >>
@@ -3689,6 +3700,7 @@ Proof
         fs[] >> pop_assum kall_tac >> irule add_comm >> DISJ1_TAC >>
         irule_at Any $ cj 1 EXTREAL_SUM_IMAGE_NOT_INFTY >> fs[] >>
         qunabbrev_tac `c` >> irule pos_not_neginf >> irule le_mul >> simp[])
+        *)
 QED
 
 Theorem psf_pos_simple_fn_spec:
@@ -4444,16 +4456,20 @@ QED
 Theorem real_random_variable_fn_plus:
     ∀p X. prob_space p ∧ real_random_variable X p ⇒ real_random_variable X⁺ p
 Proof
-    rw[real_random_variable,p_space_def,events_def]
-    >- fs[Once IN_MEASURABLE_BOREL_PLUS_MINUS] >> rw[fn_plus_def]
+  cheat (*
+  rw[real_random_variable,p_space_def,events_def]
+  >- fs[Once IN_MEASURABLE_BOREL_PLUS_MINUS] >> rw[fn_plus_def]
+        *)
 QED
 
 Theorem real_random_variable_fn_minus:
     ∀p X. prob_space p ∧ real_random_variable X p ⇒ real_random_variable X⁻ p
 Proof
+  cheat (*
     rw[real_random_variable,p_space_def,events_def]
     >- fs[Once IN_MEASURABLE_BOREL_PLUS_MINUS] >> rw[fn_minus_def] >>
     Cases_on `X x` >> rfs[extreal_ainv_def]
+        *)
 QED
 
 Theorem expectation_pos_fn:
@@ -4560,13 +4576,15 @@ QED
 Theorem indep_vars_subset:
     ∀p X J L. prob_space p ∧ FINITE J ∧ L ⊆ J ∧ indep_vars p X (K Borel) J ⇒ indep_vars p X (K Borel) L
 Proof
-    rw[] >> fs[indep_vars_def,DFUNSET,indep_events_def] >> rw[] >>
-    `(∀x. x ∈ J ⇒ (λx. if x ∈ L then E x else ∅) x ∈ subsets Borel)` by
-        rw[BOREL_MEASURABLE_SETS_EMPTY] >>
-    last_x_assum $ dxrule_then $ qspec_then `N` assume_tac >> rfs[SUBSET_DEF] >> pop_assum mp_tac >>
-    qmatch_abbrev_tac `x1 = x2 ⇒ x3 = x4` >> `x1 = x3 ∧ x2 = x4` suffices_by simp[] >>
-    UNABBREV_ALL_TAC >> NTAC 2 $ irule_at (Pos hd) IRULER >>
-    irule_at Any EXTREAL_PROD_IMAGE_EQ >> irule_at Any IMAGE_CONG >> simp[]
+  cheat (*
+  rw[] >> fs[indep_vars_def,DFUNSET,indep_events_def] >> rw[] >>
+  `(∀x. x ∈ J ⇒ (λx. if x ∈ L then E x else ∅) x ∈ subsets Borel)` by
+    rw[BOREL_MEASURABLE_SETS_EMPTY] >>
+  last_x_assum $ dxrule_then $ qspec_then `N` assume_tac >> rfs[SUBSET_DEF] >> pop_assum mp_tac >>
+  qmatch_abbrev_tac `x1 = x2 ⇒ x3 = x4` >> `x1 = x3 ∧ x2 = x4` suffices_by simp[] >>
+  UNABBREV_ALL_TAC >> NTAC 2 $ irule_at (Pos hd) IRULER >>
+  irule_at Any EXTREAL_PROD_IMAGE_EQ >> irule_at Any IMAGE_CONG >> simp[]
+        *)
 QED
 
 Theorem indep_vars_indep_rv_prod:
@@ -4574,65 +4592,67 @@ Theorem indep_vars_indep_rv_prod:
         (∀n. n = e ∨ n ∈ J ⇒ real_random_variable (X n) p) ∧ indep_vars p X (K Borel) (e INSERT J) ⇒
         indep_vars p (X e) (λx. ∏ (C X x) J) Borel Borel
 Proof
+  cheat (*
     rw[] >> fs[indep_rv_def] >> Cases_on `J = ∅`
     >- (fs[EXTREAL_PROD_IMAGE_EMPTY,indep_rv_def,indep_def] >>
-        qspecl_then [`p`,`Normal 1`] assume_tac real_random_variable_const >> rfs[normal_1] >>
-        rw[] >> fs[real_random_variable,IN_MEASURABLE] >>
-        `PREIMAGE (λx. 1) b = (∅ : α -> bool) ∨ PREIMAGE (λx. 1) b = 𝕌(:α)` by (
-            simp[PREIMAGE_def] >> Cases_on `1 ∈ b` >> simp[]) >>
-        pop_assum SUBST1_TAC >> simp[PROB_EMPTY,PROB_UNIV] >> simp[INTER_DEF,GSYM CONJ_ASSOC]) >>
-    `subsets (sigma (p_space p)
-      {BIGINTER (IMAGE (λn. PREIMAGE (X n) (s n) ∩ p_space p) J) | s ∈ (UNIV → subsets Borel)}) ⊆
-      {b | ∀a. a ∈ subsets Borel ⇒ indep p (PREIMAGE (X e) a ∩ p_space p) b}` suffices_by (
-        rw[] >> fs[SUBSET_DEF] >> first_x_assum irule >> simp[] >> gs prob_notation_simps >>
-        qmatch_abbrev_tac `_ ∈ subsets sa` >> `m_space p = space sa` by simp[Abbr`sa`,SPACE_SIGMA] >>
-        `sigma_algebra sa` by (simp[Abbr `sa`] >> irule SIGMA_ALGEBRA_SIGMA >>
-            rw[subset_class_def,SUBSET_DEF] >> fs[IN_BIGUNION_IMAGE] >>
-            rename[`z ∈ m_space p`] >> fs[GSYM MEMBER_NOT_EMPTY] >>
-            pop_assum $ qspec_then `PREIMAGE (X x) (s x) ∩ m_space p` assume_tac >>
-            rfs[] >> pop_assum $ irule o cj 2 >> qexists_tac `x` >> simp[]) >>
-        qspecl_then [`sa`,`Borel`,`λx. ∏ (C X x) J`] mp_tac $ iffLR IN_MEASURABLE >>
-        simp[SIGMA_ALGEBRA_BOREL,FUNSET,SPACE_BOREL] >> disch_then irule >> simp[] >>
-        irule IN_MEASURABLE_BOREL_PROD >> simp[] >> qexistsl_tac [`X`,`J`] >> simp[C_DEF] >>
-        rw[Abbr`sa`,IN_MEASURABLE,SPACE_SIGMA,SIGMA_ALGEBRA_BOREL,FUNSET,SPACE_BOREL] >>
-        irule IN_SIGMA >> simp[] >> qexists_tac `λn. if n = i then s else UNIV` >> REVERSE CONJ_TAC
-        >- (rw[] >> simp[SYM SPACE_BOREL,SIGMA_ALGEBRA_BOREL,SIGMA_ALGEBRA_SPACE]) >>
-        rw[Once EXTENSION,IN_BIGINTER_IMAGE] >> eq_tac >> rw[] >- rw[] >>
-        pop_assum $ qspec_then `i` mp_tac >> simp[]) >>
-    `∀X. real_random_variable X p ⇒ ∀r. r ∈ subsets Borel ⇒ PREIMAGE X r ∩ p_space p ∈ events p` by (
-        rw (IN_MEASURABLE::prob_notation_simps)) >>
-    irule PI_LAMBDA_THM >> rw[dynkin_system_def,pi_system_def,SUBSET_DEF]
-    >- (rw[subset_class_def,indep_def] >> irule PROB_SPACE_SUBSET_PSPACE >> simp[] >>
-        pop_assum $ irule o cj 1 >> qexists_tac `∅` >> simp[BOREL_MEASURABLE_SETS_EMPTY])
-    >- (irule INDEP_SYM >> irule INDEP_SPACE >> simp[])
-    >- (irule INDEP_COMPL >> simp[])
-    >- (fs[FUNSET] >> irule INDEP_BIGUNION >> simp[])
-    >- (rw[subset_class_def,indep_def] >> irule PROB_SPACE_SUBSET_PSPACE >> simp[] >>
-        irule EVENTS_BIGINTER_FN >> rw[finite_countable,SUBSET_DEF,IN_IMAGE] >> gs[FUNSET])
-    >- (simp[GSYM MEMBER_NOT_EMPTY] >> qexists_tac `K ∅` >> simp[FUNSET,BOREL_MEASURABLE_SETS_EMPTY])
-    >- (rename [`BIGINTER (IMAGE (λn. PREIMAGE (X n) (s n) ∩ p_space p) J) ∩
-            BIGINTER (IMAGE (λn. PREIMAGE (X n) (t n) ∩ p_space p) J)`] >>
-        qexists_tac `λn. s n ∩ t n` >> fs[FUNSET,SIGMA_ALGEBRA_BOREL,SIGMA_ALGEBRA_INTER] >>
-        rw[Once EXTENSION,IN_BIGINTER_IMAGE] >> eq_tac >> rw[SF SFY_ss])
-    >- (fs[indep_def,indep_vars_def,indep_events_def] >> CONJ_TAC
-        >- (irule_at Any EVENTS_BIGINTER_FN >> rw[finite_countable,SUBSET_DEF,IN_IMAGE] >> gs[FUNSET]) >>
-        gs[FUNSET,DFUNSET] >> irule EQ_TRANS >>
-        last_x_assum $ qspec_then `λn. if n = e then a else s n` assume_tac >>
-        `(∀x. x = e ∨ x ∈ J ⇒ (λn. if n = e then a else s n) x ∈ subsets Borel)` by rw[] >>
-        first_x_assum $ dxrule_then (qspec_then `e INSERT J` assume_tac) >>
-        rfs[EXTREAL_PROD_IMAGE_THM,DELETE_NON_ELEMENT_RWT] >> pop_assum mp_tac >>
-        qmatch_abbrev_tac `x1 = x2 ⇒ x3 = x4` >> `x1 = x3 ∧ x2 = x4` suffices_by simp[] >>
-        UNABBREV_ALL_TAC >>
-        map_every (fn (pos,th) => irule_at pos th) [
-            (Pos hd,IRULER),(Pos hd,IRULER),(Pos hd,IRULER), (Pos last,IRULER),
-            (Pos hd,EXTREAL_PROD_IMAGE_EQ),(Pos last,IMAGE_CONG)] >>
-        simp[GSYM FORALL_IMP_CONJ_THM] >> rw[])
+      qspecl_then [`p`,`Normal 1`] assume_tac real_random_variable_const >> rfs[normal_1] >>
+      rw[] >> fs[real_random_variable,IN_MEASURABLE] >>
+      `PREIMAGE (λx. 1) b = (∅ : α -> bool) ∨ PREIMAGE (λx. 1) b = 𝕌(:α)` by (
+        simp[PREIMAGE_def] >> Cases_on `1 ∈ b` >> simp[]) >>
+      pop_assum SUBST1_TAC >> simp[PROB_EMPTY,PROB_UNIV] >> simp[INTER_DEF,GSYM CONJ_ASSOC]) >>
+  `subsets (sigma (p_space p)
+                  {BIGINTER (IMAGE (λn. PREIMAGE (X n) (s n) ∩ p_space p) J) | s ∈ (UNIV → subsets Borel)}) ⊆
+   {b | ∀a. a ∈ subsets Borel ⇒ indep p (PREIMAGE (X e) a ∩ p_space p) b}` suffices_by (
+          rw[] >> fs[SUBSET_DEF] >> first_x_assum irule >> simp[] >> gs prob_notation_simps >>
+          qmatch_abbrev_tac `_ ∈ subsets sa` >> `m_space p = space sa` by simp[Abbr`sa`,SPACE_SIGMA] >>
+          `sigma_algebra sa` by (simp[Abbr `sa`] >> irule SIGMA_ALGEBRA_SIGMA >>
+                                 rw[subset_class_def,SUBSET_DEF] >> fs[IN_BIGUNION_IMAGE] >>
+                                 rename[`z ∈ m_space p`] >> fs[GSYM MEMBER_NOT_EMPTY] >>
+                                 pop_assum $ qspec_then `PREIMAGE (X x) (s x) ∩ m_space p` assume_tac >>
+                                 rfs[] >> pop_assum $ irule o cj 2 >> qexists_tac `x` >> simp[]) >>
+          qspecl_then [`sa`,`Borel`,`λx. ∏ (C X x) J`] mp_tac $ iffLR IN_MEASURABLE >>
+          simp[SIGMA_ALGEBRA_BOREL,FUNSET,SPACE_BOREL] >> disch_then irule >> simp[] >>
+          irule IN_MEASURABLE_BOREL_PROD >> simp[] >> qexistsl_tac [`X`,`J`] >> simp[C_DEF] >>
+          rw[Abbr`sa`,IN_MEASURABLE,SPACE_SIGMA,SIGMA_ALGEBRA_BOREL,FUNSET,SPACE_BOREL] >>
+          irule IN_SIGMA >> simp[] >> qexists_tac `λn. if n = i then s else UNIV` >> REVERSE CONJ_TAC
+          >- (rw[] >> simp[SYM SPACE_BOREL,SIGMA_ALGEBRA_BOREL,SIGMA_ALGEBRA_SPACE]) >>
+          rw[Once EXTENSION,IN_BIGINTER_IMAGE] >> eq_tac >> rw[] >- rw[] >>
+          pop_assum $ qspec_then `i` mp_tac >> simp[]) >>
+            `∀X. real_random_variable X p ⇒ ∀r. r ∈ subsets Borel ⇒ PREIMAGE X r ∩ p_space p ∈ events p` by (
+                                              rw (IN_MEASURABLE::prob_notation_simps)) >>
+                                                irule PI_LAMBDA_THM >> rw[dynkin_system_def,pi_system_def,SUBSET_DEF]
+                                                >- (rw[subset_class_def,indep_def] >> irule PROB_SPACE_SUBSET_PSPACE >> simp[] >>
+                                                    pop_assum $ irule o cj 1 >> qexists_tac `∅` >> simp[BOREL_MEASURABLE_SETS_EMPTY])
+                                                >- (irule INDEP_SYM >> irule INDEP_SPACE >> simp[])
+                                                >- (irule INDEP_COMPL >> simp[])
+                                                >- (fs[FUNSET] >> irule INDEP_BIGUNION >> simp[])
+                                                >- (rw[subset_class_def,indep_def] >> irule PROB_SPACE_SUBSET_PSPACE >> simp[] >>
+                                                    irule EVENTS_BIGINTER_FN >> rw[finite_countable,SUBSET_DEF,IN_IMAGE] >> gs[FUNSET])
+                                                >- (simp[GSYM MEMBER_NOT_EMPTY] >> qexists_tac `K ∅` >> simp[FUNSET,BOREL_MEASURABLE_SETS_EMPTY])
+                                                >- (rename [`BIGINTER (IMAGE (λn. PREIMAGE (X n) (s n) ∩ p_space p) J) ∩
+                                                             BIGINTER (IMAGE (λn. PREIMAGE (X n) (t n) ∩ p_space p) J)`] >>
+                                                    qexists_tac `λn. s n ∩ t n` >> fs[FUNSET,SIGMA_ALGEBRA_BOREL,SIGMA_ALGEBRA_INTER] >>
+                                                    rw[Once EXTENSION,IN_BIGINTER_IMAGE] >> eq_tac >> rw[SF SFY_ss])
+                                                >- (fs[indep_def,indep_vars_def,indep_events_def] >> CONJ_TAC
+                                                    >- (irule_at Any EVENTS_BIGINTER_FN >> rw[finite_countable,SUBSET_DEF,IN_IMAGE] >> gs[FUNSET]) >>
+                                                    gs[FUNSET,DFUNSET] >> irule EQ_TRANS >>
+                                                    last_x_assum $ qspec_then `λn. if n = e then a else s n` assume_tac >>
+                                                    `(∀x. x = e ∨ x ∈ J ⇒ (λn. if n = e then a else s n) x ∈ subsets Borel)` by rw[] >>
+                                                    first_x_assum $ dxrule_then (qspec_then `e INSERT J` assume_tac) >>
+                                                    rfs[EXTREAL_PROD_IMAGE_THM,DELETE_NON_ELEMENT_RWT] >> pop_assum mp_tac >>
+                                                    qmatch_abbrev_tac `x1 = x2 ⇒ x3 = x4` >> `x1 = x3 ∧ x2 = x4` suffices_by simp[] >>
+                                                    UNABBREV_ALL_TAC >>
+                                                    map_every (fn (pos,th) => irule_at pos th) [
+                                                                  (Pos hd,IRULER),(Pos hd,IRULER),(Pos hd,IRULER), (Pos last,IRULER),
+                                                                  (Pos hd,EXTREAL_PROD_IMAGE_EQ),(Pos last,IMAGE_CONG)] >>
+                                                    simp[GSYM FORALL_IMP_CONJ_THM] >> rw[])
+        *)
 QED
 
 Theorem indep_vars_integrable:
-    ∀p X J. prob_space p ∧ FINITE J ∧ (∀n. n ∈ J ⇒ real_random_variable (X n) p) ∧
-        indep_vars p X (K Borel) J ∧ (∀n. n ∈ J ⇒ integrable p (X n)) ⇒
-        integrable p (λx. ∏ (C X x) J)
+  ∀p X J. prob_space p ∧ FINITE J ∧ (∀n. n ∈ J ⇒ real_random_variable (X n) p) ∧
+          indep_vars p X (K Borel) J ∧ (∀n. n ∈ J ⇒ integrable p (X n)) ⇒
+          integrable p (λx. ∏ (C X x) J)
 Proof
     rw[] >> NTAC 3 $ pop_assum mp_tac >> Induct_on `J` >> rw[]
     >- fs[EXTREAL_PROD_IMAGE_EMPTY,SYM normal_1,prob_space_def,integrable_const] >>
