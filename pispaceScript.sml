@@ -1050,26 +1050,25 @@ Theorem pi_measure_space_dim_indep_vars:
     ∀n mn X A. (∀i. i < n ⇒ prob_space (mn i)) ∧ (∀i. i < n ⇒ random_variable (X i) (mn i) (A i)) ⇒
         indep_vars (pi_measure_space n mn) (λm. X m ∘ C LET m) A (count n)
 Proof
-  cheat (*
     rw[indep_vars_def,DFUNSET,indep_events_def] >> simp[SF PROB_ss] >>
     qabbrev_tac `PreX = (λi. PREIMAGE (X i) (E i) ∩ m_space (mn i))` >>
     qspecl_then [`n`,`mn`,`PreX`,`N`] assume_tac pi_prob_rect >>
     `∀x1:extreal x2 x3 x4. x2 = x3 ∧ x1 = x2 ∧ x3 = x4 ⇒ x1 = x4` by simp[] >>
-         pop_assum $ pop_assum o C (resolve_then (Pos hd) irule) >> simp[] >>
-         map_every (irule_at Any) [EXTREAL_PROD_IMAGE_EQ,IRULER,IRULER] >> rw[]
-         >- (simp[Abbr `PreX`] >> simp[Once EXTENSION] >> rw[] >>
-             eq_tac >> DISCH_TAC >> fs[] >> rename [`i ∈ N`] >> qexists_tac `i` >> simp[]
-             >| [irule PREIMAGE_o_INTER,irule $ GSYM PREIMAGE_o_INTER] >>
-             fs[SUBSET_DEF] >> rw[] >> first_x_assum $ drule_then assume_tac >>
-             drule_all in_pi_m_space_in_m_space >> simp[])
-         >- (simp[Abbr `PreX`] >> rename [`i ∈ N`] >>
-             `IMAGE (C LET i) (pi_m_space n mn) ⊆ m_space (mn i)` by (fs[SUBSET_DEF] >> rw[] >>
-                                                                      first_x_assum $ drule_then assume_tac >> drule_all in_pi_m_space_in_m_space >> simp[]) >>
-             qspecl_then [`pi_m_space n mn`,`m_space (mn i)`,`C LET i`,`X i`,`E i`] mp_tac PREIMAGE_o_INTER >>
-             simp[] >> DISCH_THEN kall_tac >> irule $ GSYM pi_prob_dim >>
-             fs[SUBSET_DEF,random_variable_def,IN_MEASURABLE,SF PROB_ss])
-         >- (rw[Abbr `PreX`,DFUNSET] >> fs[SUBSET_DEF,random_variable_def,IN_MEASURABLE,SF PROB_ss])
-         *)
+    pop_assum $ pop_assum o C (resolve_then (Pos hd) irule) >> simp[] >>
+    map_every (irule_at Any) [EXTREAL_PROD_IMAGE_EQ,IRULER,IRULER] >> rw[]
+    >- (simp[Abbr `PreX`] >> simp[Once EXTENSION] >> rw[] >>
+        eq_tac >> DISCH_TAC >> fs[] >> rename [`i ∈ N`] >> qexists_tac `i` >> simp[]
+        >| [irule PREIMAGE_o_INTER,irule $ GSYM PREIMAGE_o_INTER] >>
+        fs[SUBSET_DEF] >> rw[] >> first_x_assum $ drule_then assume_tac >>
+        metis_tac[in_pi_m_space_in_m_space])
+    >- (simp[Abbr `PreX`] >> rename [`i ∈ N`] >>
+        `IMAGE (C LET i) (pi_m_space n mn) ⊆ m_space (mn i)` by
+            (fs[SUBSET_DEF] >> rw[] >>
+             first_x_assum $ drule_then assume_tac >> metis_tac[in_pi_m_space_in_m_space]) >>
+        qspecl_then [`pi_m_space n mn`,`m_space (mn i)`,`C LET i`,`X i`,`E i`] mp_tac PREIMAGE_o_INTER >>
+        simp[] >> DISCH_THEN kall_tac >> irule $ GSYM pi_prob_dim >>
+        fs[SUBSET_DEF,random_variable_def,IN_MEASURABLE,SF PROB_ss])
+    >- (rw[Abbr `PreX`,DFUNSET] >> fs[SUBSET_DEF,random_variable_def,IN_MEASURABLE,SF PROB_ss])
 QED
 
 val _ = export_theory();
