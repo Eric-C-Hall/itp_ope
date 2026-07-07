@@ -2066,31 +2066,34 @@ Proof
     simp[prod_sets_def] >> qexistsl_tac [`space a`,`s`] >> simp[SIGMA_ALGEBRA_SPACE]
 QED
 
+(*
+This theorem was broken (presumably in an update to HOL4), but it wasn't useful
+for my purposes, so I commented it out.
+  - Eric, modifying code originally written by Jared Yeager
 Theorem IN_MEASURABLE_ALT:
     ∀f a b. f ∈ measurable a b ⇔ ∃ar br.
         sigma (space a) ar = a ∧ sigma (space b) br = b ∧ subset_class (space a) ar ∧
         subset_class (space b) br ∧ f ∈ (space a → space b) ∧
         ∀s. s ∈ br ⇒ PREIMAGE f s ∩ space a ∈ ar
 Proof
-  cheat
-(*rw[IN_MEASURABLE] >> eq_tac >> strip_tac
-    >- (qexistsl_tac [`subsets a`,`subsets b`] >> simp[SIGMA_STABLE,SIGMA_ALGEBRA_SUBSET_CLASS]) >>
-    map_every qabbrev_tac [`asp = space a`,`bsp = space b`] >> NTAC 2 $ pop_assum kall_tac >>
-    NTAC 2 $ last_x_assum $ SUBST1_TAC o SYM >> NTAC 2 $ irule_at Any SIGMA_ALGEBRA_SIGMA >> simp[] >>
-    `sigma_algebra (bsp,{s | s ⊆ bsp ∧ PREIMAGE f s ∩ asp ∈ subsets (sigma asp ar)})` suffices_by (
-        rw[sigma_def] >> first_x_assum (fn th => first_x_assum $ C (resolve_then Any assume_tac) th) >>
-        fs[] >> pop_assum $ irule o cj 2 >> simp[] >> simp[SUBSET_DEF] >> fs[subset_class_def,SUBSET_DEF]) >>
-    simp[SIGMA_ALGEBRA_ALT_SPACE,subset_class_def,FUNSET] >>
-    NTAC 2 $ dxrule_then assume_tac SIGMA_ALGEBRA_SIGMA >> rpt CONJ_TAC
-    >- (`PREIMAGE f bsp ∩ asp = asp` by (simp[EXTENSION] >> rw[] >> eq_tac >> rw[] >> fs[FUNSET]) >>
-        pop_assum SUBST1_TAC >> NTAC 2 $ dxrule_then assume_tac SIGMA_ALGEBRA_SPACE >> fs[SPACE_SIGMA])
-    >- (rw[] >> dxrule_all_then mp_tac SIGMA_ALGEBRA_COMPL >> simp[SPACE_SIGMA] >>
-        `PREIMAGE f (bsp DIFF s) ∩ asp = asp DIFF PREIMAGE f s ∩ asp` suffices_by simp[] >>
-        rw[EXTENSION] >> eq_tac  >> rw[] >> fs[FUNSET])
-    >- (qx_gen_tac `sn` >> rw[] >- (simp[SUBSET_DEF,IN_BIGUNION_IMAGE] >> rw[] >> fs[SUBSET_DEF,SF SFY_ss]) >>
+  rw[IN_MEASURABLE] >> eq_tac >> strip_tac
+  >- (qexistsl_tac [`subsets a`,`subsets b`] >> simp[SIGMA_STABLE,SIGMA_ALGEBRA_SUBSET_CLASS]) >>
+  map_every qabbrev_tac [`asp = space a`,`bsp = space b`] >> NTAC 2 $ pop_assum kall_tac >>
+  NTAC 2 $ last_x_assum $ SUBST1_TAC o SYM >> NTAC 2 $ irule_at Any SIGMA_ALGEBRA_SIGMA >> simp[] >>
+  `sigma_algebra (bsp,{s | s ⊆ bsp ∧ PREIMAGE f s ∩ asp ∈ subsets (sigma asp ar)})` suffices_by (
+    rw[sigma_def] >> first_x_assum (fn th => first_x_assum $ C (resolve_then Any assume_tac) th) >>
+    fs[] >> pop_assum $ irule o cj 2 >> simp[] >> simp[SUBSET_DEF] >> fs[subset_class_def,SUBSET_DEF]) >>
+  simp[SIGMA_ALGEBRA_ALT_SPACE,subset_class_def,FUNSET] >>
+  NTAC 2 $ dxrule_then assume_tac SIGMA_ALGEBRA_SIGMA >> rpt CONJ_TAC
+  >- (`PREIMAGE f bsp ∩ asp = asp` by (simp[EXTENSION] >> rw[] >> eq_tac >> rw[] >> fs[FUNSET]) >>
+      pop_assum SUBST1_TAC >> NTAC 2 $ dxrule_then assume_tac SIGMA_ALGEBRA_SPACE >> fs[SPACE_SIGMA])
+  >- (rw[] >> dxrule_all_then mp_tac SIGMA_ALGEBRA_COMPL >> simp[SPACE_SIGMA] >>
+      `PREIMAGE f (bsp DIFF s) ∩ asp = asp DIFF PREIMAGE f s ∩ asp` suffices_by simp[] >>
+      rw[EXTENSION] >> eq_tac  >> rw[] >> fs[FUNSET])
+  >- (qx_gen_tac `sn` >> rw[] >- (simp[SUBSET_DEF,IN_BIGUNION_IMAGE] >> rw[] >> fs[SUBSET_DEF,SF SFY_ss]) >>
         simp[PREIMAGE_BIGUNION,GSYM BIGUNION_IMAGE_INTER_RIGHT,IMAGE_IMAGE] >>
         irule SIGMA_ALGEBRA_COUNTABLE_UNION >> simp[] >> rw[SUBSET_DEF] >> simp[])*)
-QED
+QED*)
 
 Theorem IN_MEASURABLE_BOREL_FROM_PROD_SIGMA_ALT:
     ∀a b f. sigma_algebra a ∧ sigma_algebra b ∧ f ∈ Borel_measurable (a × b) ⇒
