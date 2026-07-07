@@ -11,7 +11,6 @@ open limTheory;
 open seqTheory;
 open transcTheory;
 open real_sigmaTheory;
-open util_probTheory;
 open extrealTheory;
 open sigma_algebraTheory;
 open measureTheory;
