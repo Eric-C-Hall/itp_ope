@@ -3948,16 +3948,6 @@ Proof
         (irule o SIMP_RULE (srw_ss ()) [] o GSYM) ext_suminf_cmul >> simp[]
 QED
 
-Theorem psf_integral_mono:
-    ∀m s e a t f b. measure_space m ∧ valid_psf (sig_alg m) s e a ∧ valid_psf (sig_alg m) t f b ∧
-        (∀x. x ∈ m_space m ⇒ psf s e a x ≤ psf t f b x) ⇒
-        psf_integral (measure m) s e a ≤ psf_integral (measure m) t f b
-Proof
-    rw[] >> drule_then assume_tac psf_pos_simple_fn_spec >> rfs[] >>
-    pop_assum (fn th => NTAC 2 $ dxrule_then assume_tac th) >> fs[] >>
-    drule_all_then assume_tac pos_simple_fn_integral_mono >> simp[]
-QED
-
 Theorem pos_fn_integral_const:
     ∀m c. measure_space m ∧ 0 ≤ c ⇒ ∫⁺ m (λx. c) = c * measure m (m_space m)
 Proof
