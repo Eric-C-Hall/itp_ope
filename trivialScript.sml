@@ -3956,21 +3956,6 @@ Proof
     rw[pos_simple_fn_def,valid_psf_def]
 QED
 
-Theorem pfs_max:
-    ∀sa fs fe fa gs ge ga. sigma_algebra sa ∧ valid_psf sa fs fe fa ∧ valid_psf sa gs ge ga ⇒
-        ∃hs he ha. valid_psf sa hs he ha ∧
-        ∀x. x ∈ space sa ⇒ psf hs he ha x = max (psf fs fe fa x) (psf gs ge ga x)
-Proof
-    rw[] >> dxrule_then assume_tac measure_space_trivial >>
-    dxrule_then assume_tac $ cj 1 $ iffLR sigma_finite_measure_space_def >>
-    drule_then assume_tac psf_pos_simple_fn_spec >> rfs[] >>
-    pop_assum imp_res_tac >> fs[] >>
-    dxrule_all_then assume_tac pos_simple_fn_max >> fs[] >>
-    rename [`pos_simple_fn _ _ s e a`] >> qexistsl_tac [`s`,`e`,`a`] >>
-    drule_then assume_tac $ cj 2 pos_simple_fn_psf >> rw[] >>
-    fs[pos_simple_fn_def,psf_def]
-QED
-
 Theorem psf_integral_mono:
     ∀m s e a t f b. measure_space m ∧ valid_psf (sig_alg m) s e a ∧ valid_psf (sig_alg m) t f b ∧
         (∀x. x ∈ m_space m ⇒ psf s e a x ≤ psf t f b x) ⇒
