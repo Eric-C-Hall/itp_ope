@@ -1374,14 +1374,6 @@ Proof
     `0:real < exp r` suffices_by simp[REAL_LT_LE] >> simp[EXP_POS_LT]
 QED
 
-Theorem exp_mono_le:
-    ∀x:extreal y. exp x ≤ exp y ⇔ x ≤ y
-Proof
-    rw[] >> Cases_on `x` >> Cases_on `y` >> simp[extreal_exp_def,EXP_MONO_LE]
-    >- (simp[EXP_POS_LE])
-    >- (simp[GSYM real_lt,EXP_POS_LT])
-QED
-
 Theorem exp_add:
     ∀x:extreal y. (x ≠ −∞ ∧ y ≠ −∞) ∨ (x ≠ +∞ ∧ y ≠ +∞) ⇒ exp (x + y) = exp x * exp y
 Proof
@@ -2072,14 +2064,6 @@ Proof
         rw[] >> eq_tac >> rw[] >> dxrule_all_then mp_tac SIGMA_ALGEBRA_SUBSET_SPACE >> simp[SUBSET_DEF]) >>
     pop_assum SUBST1_TAC >> simp[prod_sigma_def] >> irule IN_SIGMA >>
     simp[prod_sets_def] >> qexistsl_tac [`space a`,`s`] >> simp[SIGMA_ALGEBRA_SPACE]
-QED
-
-Theorem IN_MEASURABLE_PROD_SIGMA:
-    ∀a bx by fx fy f. sigma_algebra a ∧ fx ∈ measurable a bx ∧ fy ∈ measurable a by ∧
-        (∀z. z ∈ space a ⇒ f z = (fx z,fy z)) ⇒ f ∈ measurable a (bx × by)
-Proof
-    rw[] >> irule IN_MEASURABLE_CONG >> qexists_tac `λz. (fx z,fy z)` >> simp[] >>
-    irule MEASURABLE_PROD_SIGMA' >> simp[o_DEF,ETA_AX]
 QED
 
 Theorem IN_MEASURABLE_ALT:
