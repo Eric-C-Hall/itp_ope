@@ -2167,7 +2167,6 @@ Theorem IN_MEASURABLE_BOREL_INV:
         (∀x. x ∈ space a ⇒ g x = (f x)⁻¹ * 𝟙 {y | f y ≠ 0} x) ⇒
         g ∈ Borel_measurable a
 Proof
-  cheat (*
   rw[] >> simp[IN_MEASURABLE_BOREL,FUNSET] >>
   `(∀c. c ≤ 0 ⇒ {x | g x < Normal c} ∩ space a ∈ subsets a) ∧
   {x | g x = 0} ∩ space a ∈ subsets a ∧
@@ -2179,7 +2178,7 @@ Proof
     UNABBREV_ALL_TAC >> rw[EXTENSION] >> qpat_x_assum `∀x. _` kall_tac >>
                                                         Cases_on `x ∈ space a` >> simp[] >> Cases_on `g x` >> simp[]) >>
   rw[]
-  >- (drule_then (qspecl_then [`if c = 0 then −∞ else Normal c⁻¹`,`0`] mp_tac) IN_MEASURABLE_BOREL_OO >>
+  >- (drule_all_then (qspecl_then [`if c = 0 then −∞ else Normal c⁻¹`,`0`] mp_tac) IN_MEASURABLE_BOREL_OO >>
       qmatch_abbrev_tac `s ∈ _ ⇒ t ∈ _` >> `s = t` suffices_by simp[] >> UNABBREV_ALL_TAC >>
       simp[EXTENSION] >> strip_tac >> Cases_on `x ∈ space a` >> simp[indicator_fn_def] >>
       Cases_on `f x` >> rw[extreal_inv_def] >> eq_tac >> strip_tac >> simp[] >>
@@ -2190,12 +2189,11 @@ Proof
       pop_assum mp_tac >> qmatch_abbrev_tac `s ∈ _ ⇒ t ∈ _` >> `s = t` suffices_by simp[] >>
       UNABBREV_ALL_TAC >> rw[EXTENSION] >> Cases_on `x ∈ space a` >> simp[indicator_fn_def] >>
       Cases_on `f x` >> rw[extreal_inv_def])
-  >- (drule_then (qspecl_then [`Normal c⁻¹`,`+∞`] mp_tac) IN_MEASURABLE_BOREL_OO >>
+  >- (drule_all_then (qspecl_then [`Normal c⁻¹`,`+∞`] mp_tac) IN_MEASURABLE_BOREL_OO >>
       qmatch_abbrev_tac `s ∈ _ ⇒ t ∈ _` >> `s = t` suffices_by simp[] >> UNABBREV_ALL_TAC >>
       rw[EXTENSION] >> Cases_on `x ∈ space a` >> simp[indicator_fn_def] >>
       Cases_on `f x` >> rw[extreal_inv_def] >> simp[] >> eq_tac >> strip_tac >> rfs[] >>
       REVERSE CONJ_ASM1_TAC >- simp[] >> `0 ≤ c * r` by simp[] >> rfs[REAL_MUL_SIGN])
-        *)
 QED
 
 Theorem IN_MEASURABLE_BOREL_MUL_INV:
