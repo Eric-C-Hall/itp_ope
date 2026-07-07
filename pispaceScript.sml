@@ -989,7 +989,6 @@ Theorem pi_measure_rect:
         pi_measure n mn (BIGINTER (IMAGE (λi. PREIMAGE (C LET i) (E i) ∩ pi_m_space n mn) (count n))) =
         ∏ (λi. measure (mn i) (E i)) (count n)
 Proof
-  cheat (*
   Induct_on `n` >> rw[] >- simp[pi_measure_def,indicator_fn_def,EXTREAL_PROD_IMAGE_EMPTY] >>
   Cases_on `n = 0`
   >- (simp[COUNT_ONE,EXTREAL_PROD_IMAGE_SING] >>
@@ -1011,10 +1010,9 @@ Proof
   simp[GSYM pi_measure_pi_cross] >> pop_assum kall_tac >> irule IRULER >>
   simp[EXTENSION,IN_BIGINTER_IMAGE,pi_m_space_def,pi_cross_def,pi_pair_def] >> qx_gen_tac `xi` >>
   eq_tac >> DISCH_TAC >> gvs[] >- (qexistsl_tac [`f`,`e`] >> simp[]) >>
-  pop_assum (fn th => map_every (fn n => assume_tac $ cj n th) [1,2]) >>
-    pop_assum $ qspec_then `0` assume_tac >> rfs[] >> rw[] >> qexistsl_tac [`f`,`e`] >>
-    simp[] >> irule MEASURE_SPACE_IN_MSPACE >> simp[] >> qexists_tac `E n` >> simp[]
-        *)
+  qpat_x_assum ‘∀i. _ ⇒ _ ∧ _’ (fn th => map_every (fn n => assume_tac $ cj n th) [1,2]) >>
+  pop_assum $ qspec_then `0` assume_tac >> rfs[] >> rw[] >> qexistsl_tac [`f`,`e`] >>
+  simp[] >> irule MEASURE_SPACE_IN_MSPACE >> simp[] >> qexists_tac `E n` >> simp[]
 QED
 
 Theorem pi_prob_rect:
