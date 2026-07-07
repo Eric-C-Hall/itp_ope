@@ -16,7 +16,6 @@ open transcTheory;
 open real_sigmaTheory;
 open binary_ieeeTheory;
 open extrealTheory;
-open util_probTheory;
 open sigma_algebraTheory;
 open measureTheory;
 open borelTheory;
@@ -597,18 +596,6 @@ Proof
     fs[BIGUNION_IMAGE_INTER_LEFT,INTER_COMM]
 QED
 
-Theorem BIGUNION_IMAGE_UNION_LEFT:
-    ∀s t f. t ≠ ∅ ⇒ BIGUNION (IMAGE (λx. f x ∪ s) t) = BIGUNION (IMAGE f t) ∪ s
-Proof
-    fs[BIGUNION_IMAGE_UNION_LEFT,UNION_COMM]
-QED
-
-Theorem BIGINTER_IMAGE_INTER_LEFT:
-    ∀s t f. t ≠ ∅ ⇒ BIGINTER (IMAGE (λx. f x ∩ s) t) = BIGINTER (IMAGE f t) ∩ s
-Proof
-    fs[BIGINTER_IMAGE_INTER_LEFT,INTER_COMM]
-QED
-
 Theorem BIGUNION_IMAGE_EQUAL:
     ∀f g s. (∀x. x ∈ s ⇒ (f x = g x)) ⇒
         (BIGUNION (IMAGE f s) = BIGUNION (IMAGE g s))
@@ -775,12 +762,6 @@ Theorem MAP_SND_ZIP:
     ∀l1 l2. LENGTH l1 = LENGTH l2 ⇒ MAP SND (ZIP (l1,l2)) = l2
 Proof
     rw[MAP_ZIP]
-QED
-
-Theorem ZIP_SNOC:
-    ∀x1 x2 l1 l2. LENGTH l1 = LENGTH l2 ⇒  ZIP (SNOC x1 l1,SNOC x2 l2) = SNOC (x1,x2) (ZIP (l1,l2))
-Proof
-    NTAC 3 strip_tac >> Induct_on `l1` >> rw[] >> Cases_on `l2` >> rw[] >> fs[]
 QED
 
 Theorem TAKE_SUC_SNOC:

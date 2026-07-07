@@ -1,0 +1,12 @@
+Theorem BIGUNION_IMAGE_UNION_LEFT:
+    ∀s t f. t ≠ ∅ ⇒ BIGUNION (IMAGE (λx. f x ∪ s) t) = BIGUNION (IMAGE f t) ∪ s
+Proof
+    fs[BIGUNION_IMAGE_UNION_LEFT,UNION_COMM]
+QED
+
+Theorem BIGINTER_IMAGE_INTER_LEFT:
+    ∀s t f. t ≠ ∅ ⇒ BIGINTER (IMAGE (λx. f x ∩ s) t) = BIGINTER (IMAGE f t) ∩ s
+Proof
+    fs[BIGINTER_IMAGE_INTER_LEFT,INTER_COMM]
+QED
+
